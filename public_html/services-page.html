@@ -1,65 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Shop Management System</title>
-    <link rel="stylesheet" type="text/css" href="css/appts.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Car Shop Management System</title>
 
-    <!-- <style src = "css/appts.css">
-    </style> -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            poppins: ['Poppins', 'Arial', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/appts.css" />
 </head>
-<div class="page-title">Services</div>
-<button class="add-button"  id="addService">Add New Service</button>
-<table id = 'serviceTable'>
-    <thead>
+
+<body class="font-poppins bg-gray-100 text-gray-800 p-6">
+
+  <div class="text-2xl font-bold mb-6 text-gray-800">Services</div>
+
+  <button id="addService" class="bg-gray-700 text-white px-6 py-2 rounded hover:bg-black transition mb-6">
+    Add New Service
+  </button>
+
+  <div class="overflow-x-auto mb-10">
+    <table id="serviceTable" class="min-w-full bg-white rounded shadow">
+      <thead class="bg-gray-700 text-white text-sm uppercase tracking-wide">
         <tr>
-            <th>Service Name</th>
-            <th>Description</th>
-            <th>Actions</th>
+          <th class="px-4 py-3 text-left">Service Name</th>
+          <th class="px-4 py-3 text-left">Description</th>
+          <th class="px-4 py-3 text-left">Actions</th>
         </tr>
-    </thead>
-    <tbody>
-        <!-- Service data will be populated here -->
-    </tbody>
-</table>
-<div id="modal" class="modal">
-    
-    <div class="modal-content">
-        <div class="close" onclick="closeModal('modal')">&times;</div>
+      </thead>
+      <tbody class="text-gray-800 divide-y divide-gray-200 text-sm">
+      </tbody>
+    </table>
+  </div>
 
-        <br> <br>
-        <div id='modalInfo'>
-        New Service Info <br><br>
-        <input type="text" id="serviceName" name="serviceName" placeholder="Service Name"><br><br>
-        <input type="text" id="serviceDescription" name="serviceDescription" placeholder="Service Description"><br><br>
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="modal-content bg-white w-full max-w-md p-6 rounded-lg shadow-lg relative">
+      <button onclick="closeModal('modal')" class="absolute top-2 right-4 text-gray-500 text-2xl">&times;</button>
+      <div id="modalInfo" class="space-y-4 text-center">
+        <h2 class="text-xl font-semibold text-gray-800">New Service Info</h2>
 
-        <input id="addNewService" type="button" value="Add New Service">
+        <input type="text" id="serviceName" name="serviceName" placeholder="Service Name"
+               class="w-full p-2 border border-gray-300 rounded" />
 
+        <input type="text" id="serviceDescription" name="serviceDescription" placeholder="Service Description"
+               class="w-full p-2 border border-gray-300 rounded" />
 
-        </div>
+        <input id="addNewService" type="button" value="Add New Service"
+               class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full" />
+      </div>
     </div>
-</div>
+  </div>
 
+  <div id="editmodal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="modal-content bg-white w-full max-w-md p-6 rounded-lg shadow-lg relative">
+      <button onclick="closeModal('editmodal')" class="absolute top-2 right-4 text-gray-500 text-2xl">&times;</button>
+      <div id="editModalInfo" class="space-y-4 text-center">
+        <h2 class="text-xl font-semibold text-gray-800">Edit Service Info</h2>
 
-<div id="editmodal" class="modal">
-    
-    
-    <div class="modal-content">
-        <div class="close" onclick="closeModal('editmodal')">&times;</div>
-        
-        
-        <div id='editModalInfo'>
-            Edit Service Info <br><br>
-            <input type="text" id="editServiceName" name="editServiceName" placeholder="Service"><br><br>
-            <input type="text" id="editServiceDescription" name="editServiceDescription" placeholder="Service Description"><br><br>
+        <input type="text" id="editServiceName" name="editServiceName" placeholder="Service Name"
+               class="w-full p-2 border border-gray-300 rounded" />
 
-            <input id ='editservice' type="submit" value="Submit"><br> <br>
-            <input id ='deleteservice' type="button" value="Delete Service">
+        <input type="text" id="editServiceDescription" name="editServiceDescription" placeholder="Service Description"
+               class="w-full p-2 border border-gray-300 rounded" />
 
-        </div>
+        <input id="editservice" type="submit" value="Submit"
+               class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 w-full" />
 
+        <input id="deleteservice" type="button" value="Delete Service"
+               class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 w-full" />
+      </div>
     </div>
-</div>
+  </div>
 
+  <script>
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
 
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+  </script>
+
+</body>
+</html>
