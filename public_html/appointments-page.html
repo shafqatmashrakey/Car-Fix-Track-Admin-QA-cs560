@@ -1,110 +1,130 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Shop Management System</title>
-    <link rel="stylesheet" type="text/css" href="css/appts.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Car Shop Management System</title>
 
-    <!-- <style src = "css/appts.css">
-    </style> -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            poppins: ['Poppins', 'Arial', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/appts.css">
 </head>
-<div class="page-title">Appointments</div>
-<button class="add-button"  id="addAppointment">New Appointment</button>
-<table id="apptTable">
-    <thead>
+
+<body class="font-poppins bg-gray-100 text-gray-800 p-6">
+
+  <div class="text-2xl font-bold mb-4 text-gray-800">Appointments</div>
+
+  <button id="addAppointment" class="bg-gray-700 text-white px-6 py-2 rounded hover:bg-black transition mb-4">
+    New Appointment
+  </button>
+
+  <div class="overflow-x-auto mb-10">
+    <table id="apptTable" class="min-w-full bg-white rounded shadow">
+      <thead class="bg-gray-700 text-white text-sm uppercase tracking-wider">
         <tr>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Customer</th>
-            <th>Vehicle</th>
-            <th>Issue </th>
-            <th>Service</th>
-            <th>Employee</th>
-            <th>Finished?</th>
-            <th>Actions</th>
+          <th class="px-4 py-3 text-left">Date</th>
+          <th class="px-4 py-3 text-left">Time</th>
+          <th class="px-4 py-3 text-left">Customer</th>
+          <th class="px-4 py-3 text-left">Vehicle</th>
+          <th class="px-4 py-3 text-left">Issue</th>
+          <th class="px-4 py-3 text-left">Service</th>
+          <th class="px-4 py-3 text-left">Employee</th>
+          <th class="px-4 py-3 text-left">Finished?</th>
+          <th class="px-4 py-3 text-left">Actions</th>
         </tr>
-    </thead>
-    <tbody>
-        <!-- Appointment data will be populated here -->
-    </tbody>
-</table>
-<div id="modal" class="modal">
-    
-    <div class="modal-content">
-        <div class="close" onclick="closeModal('modal')">&times;</div>
+      </thead>
+      <tbody class="text-gray-800 divide-y divide-gray-200 text-sm">
+      </tbody>
+    </table>
+  </div>
 
-        <br> <br>
-        <div id='modalInfo'>
-        New Appointment Info <br><br>
-        <input type="date" id="apptDate" name="apptDate" placeholder="Appointment Date"><br><br>
-        <input type="time" id="apptTime" name="apptTime" placeholder="Appointment Time"><br><br>
-        <input type="text" id="apptIssue" name='apptIssue' placeholder="Appointment Issue"> <br><br>
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white w-full max-w-md p-6 rounded-lg shadow-lg relative">
+      <button onclick="closeModal('modal')" class="absolute top-2 right-4 text-gray-500 text-2xl">&times;</button>
+      <div id="modalInfo" class="space-y-4 text-center">
+        <h2 class="text-lg font-semibold">New Appointment Info</h2>
 
-        <select id="cars" name="cars">
-            <option value="" disabled selected>Select Car</option>
+        <input type="date" id="apptDate" class="w-full p-2 border border-gray-300 rounded" />
+        <input type="time" id="apptTime" class="w-full p-2 border border-gray-300 rounded" />
+        <input type="text" id="apptIssue" placeholder="Appointment Issue" class="w-full p-2 border border-gray-300 rounded" />
 
-         </select>  <br> <br>
+        <select id="cars" class="w-full p-2 border border-gray-300 rounded">
+          <option value="" disabled selected>Select Car</option>
+        </select>
 
-        <select id="services" name="services">
-            <option value="" disabled selected>Select Service</option>
-        </select>  <br> <br>
+        <select id="services" class="w-full p-2 border border-gray-300 rounded">
+          <option value="" disabled selected>Select Service</option>
+        </select>
 
-        <select id="employees" name="employees" style="display: none;">
-            <option value="" disabled selected>Select Employee</option>
-        </select> <br> <br>
+        <select id="employees" class="w-full p-2 border border-gray-300 rounded hidden">
+          <option value="" disabled selected>Select Employee</option>
+        </select>
 
-
-        <div id="items" name="items" style="display:none">
-            Additional Items <br> <br>
+        <div id="items" class="hidden">
+          <p class="text-sm text-gray-500 mb-1">Additional Items</p>
         </div>
 
-
-
-        <input id='addappt' type="button" value="Add New Appointment">
-
-
-        </div>
+        <input id="addappt" type="button" value="Add New Appointment"
+               class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full" />
+      </div>
     </div>
-</div>
+  </div>
 
-<div id="editmodal" class="modal">
-    
-    <div class="modal-content">
-        <div class="close" onclick="closeModal('editmodal')">&times;</div>
+  <div id="editmodal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white w-full max-w-md p-6 rounded-lg shadow-lg relative">
+      <button onclick="closeModal('editmodal')" class="absolute top-2 right-4 text-gray-500 text-2xl">&times;</button>
+      <div id="modalInfo" class="space-y-4 text-center">
+        <h2 class="text-lg font-semibold">Edit Appointment Info</h2>
 
-        <br> <br>
-        <div id='modalInfo'>
-        Edit Appointment Info <br><br>
-        <input type="date" id="editApptDate" name="apptDate" placeholder="Appointment Date"><br><br>
-        <input type="time" id="editApptTime" name="apptTime" placeholder="Appointment Time"><br><br>
-        <input type="text" id="editApptIssue" name='apptIssue' placeholder="Appointment Issue"> <br><br>
+        <input type="date" id="editApptDate" class="w-full p-2 border border-gray-300 rounded" />
+        <input type="time" id="editApptTime" class="w-full p-2 border border-gray-300 rounded" />
+        <input type="text" id="editApptIssue" placeholder="Appointment Issue" class="w-full p-2 border border-gray-300 rounded" />
 
-        <select id="editcars" name="cars">
-            <option value="" disabled selected>Select Car</option>
+        <select id="editcars" class="w-full p-2 border border-gray-300 rounded">
+          <option value="" disabled selected>Select Car</option>
+        </select>
 
-         </select>  <br> <br>
+        <select id="editservices" class="w-full p-2 border border-gray-300 rounded">
+          <option value="" disabled selected>Select Service</option>
+        </select>
 
-        <select id="editservices" name="services">
-            <option value="" disabled selected>Select Service</option>
-        </select>  <br> <br>
+        <select id="editemployees" class="w-full p-2 border border-gray-300 rounded">
+          <option value="" disabled selected>Select Employee</option>
+        </select>
 
-        <select id="editemployees" name="employees">
-            <option value="" disabled selected>Select Employee</option>
-        </select> <br> <br>
-
-
-        <div id="edititems" name="items" >
-            Additional Items <br> <br>
+        <div id="edititems">
+          <p class="text-sm text-gray-500 mb-1">Additional Items</p>
         </div>
 
+        <input id="editappt" type="button" value="Edit Appointment"
+               class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 w-full" />
 
-
-        <input id='editappt' type="button" value="Edit Appointment"> <br> <br>
-        <input id='deleteappt' type="button" value="Delete Appointment">
-
-
-        </div>
+        <input id="deleteappt" type="button" value="Delete Appointment"
+               class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 w-full" />
+      </div>
     </div>
-</div>
+  </div>
 
+  <script>
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>

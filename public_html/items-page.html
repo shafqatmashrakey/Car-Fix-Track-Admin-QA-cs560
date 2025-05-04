@@ -1,69 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Shop Management System</title>
-    <link rel="stylesheet" type="text/css" href="css/appts.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Car Shop Management System</title>
 
-    <!-- <style src = "css/appts.css">
-    </style> -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            poppins: ['Poppins', 'Arial', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="css/appts.css">
 </head>
-<div class="page-title">Items</div>
-<button class="add-button"  id="addItem">Add New Item</button>
-<table id = 'itemTable'>
-    <thead>
-        <tr>
-            <th>Item Name</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Actions</th>
+
+<body class="font-poppins bg-gray-100 text-gray-800 p-6">
+
+  <div class="text-2xl font-bold text-gray-700 mb-4">Items</div>
+
+  <button id="addItem" class="add-button bg-gray-700 text-white px-6 py-2 rounded hover:bg-black transition mb-4">
+    Add New Item
+  </button>
+
+  <div class="overflow-x-auto">
+    <table id="itemTable" class="w-full table-auto bg-white shadow-md rounded">
+      <thead>
+        <tr class="bg-gray-700 text-white text-sm uppercase">
+          <th class="px-4 py-2 text-left">Item Name</th>
+          <th class="px-4 py-2 text-left">Price</th>
+          <th class="px-4 py-2 text-left">Stock</th>
+          <th class="px-4 py-2 text-left">Actions</th>
         </tr>
-    </thead>
-    <tbody>
-        <!-- Service data will be populated here -->
-    </tbody>
-</table>
-<div id="modal" class="modal">
-    
-    <div class="modal-content">
-        <div class="close" onclick="closeModal('modal')">&times;</div>
+      </thead>
+      <tbody class="text-sm divide-y divide-gray-200">
+      </tbody>
+    </table>
+  </div>
 
-        <br> <br>
-        <div id='modalInfo'>
-        New Item Info <br><br>
-        <input type="text" id="itemName" name="itemName" placeholder="Item Name"><br><br>
-        <input type="number" id="itemPrice" name="itemPrice" placeholder="Item Price" step="0.01"><br><br>
-        <input type="number" id="itemStock" name="itemStock" placeholder="Item Stock"><br><br>
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="modal-content bg-white w-full max-w-md p-6 rounded-lg shadow-lg relative">
+      <button onclick="closeModal('modal')" class="absolute top-2 right-4 text-gray-500 text-2xl">&times;</button>
+      <h2 class="text-xl font-semibold mb-4">New Item Info</h2>
 
+      <input type="text" id="itemName" name="itemName" placeholder="Item Name" class="w-full p-2 border border-gray-300 rounded mb-4" />
+      <input type="number" id="itemPrice" name="itemPrice" placeholder="Item Price" step="0.01" class="w-full p-2 border border-gray-300 rounded mb-4" />
+      <input type="number" id="itemStock" name="itemStock" placeholder="Item Stock" class="w-full p-2 border border-gray-300 rounded mb-6" />
 
-        <input id='addNewItem' type="button" value="Add Item">
-
-
-        </div>
+      <input id="addNewItem" type="button" value="Add Item" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full" />
     </div>
-</div>
+  </div>
 
-<div id="editmodal" class="modal">
-    
-    
-    <div class="modal-content">
-        <div class="close" onclick="closeModal('editmodal')">&times;</div>
-        
-        
-        <div id='editModalInfo'>
-            Edit Item Info <br><br>
-            <input type="text" id="editItemName" name="editItemName" placeholder="Item Name"><br><br>
-            <input type="number" id="editItemPrice" name="editItemPrice" placeholder="Item Price" step="0.01"><br><br>
-            <input type="number" id="editItemStock" name="editItemStock" placeholder="Item Stock"><br><br>
+  <div id="editmodal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="modal-content bg-white w-full max-w-md p-6 rounded-lg shadow-lg relative">
+      <button onclick="closeModal('editmodal')" class="absolute top-2 right-4 text-gray-500 text-2xl">&times;</button>
+      <h2 class="text-xl font-semibold mb-4">Edit Item Info</h2>
 
+      <input type="text" id="editItemName" name="editItemName" placeholder="Item Name" class="w-full p-2 border border-gray-300 rounded mb-4" />
+      <input type="number" id="editItemPrice" name="editItemPrice" placeholder="Item Price" step="0.01" class="w-full p-2 border border-gray-300 rounded mb-4" />
+      <input type="number" id="editItemStock" name="editItemStock" placeholder="Item Stock" class="w-full p-2 border border-gray-300 rounded mb-6" />
 
-            <input id = 'edititem' type="button" value="Edit Item"><br> <br>
-            <input id = 'deleteitem' type="button" value="Delete Item">
-
-        </div>
-
+      <input id="edititem" type="button" value="Edit Item" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 w-full mb-2" />
+      <input id="deleteitem" type="button" value="Delete Item" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 w-full" />
     </div>
-</div>
+  </div>
 
+  <script>
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
 
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+  </script>
+
+</body>
+</html>

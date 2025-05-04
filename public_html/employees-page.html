@@ -1,123 +1,118 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Shop Management System</title>
-    <link rel="stylesheet" type="text/css" href="css/appts.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Car Shop Management System</title>
 
-    <!-- <style src = "css/appts.css">
-    </style> -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            poppins: ['Poppins', 'Arial', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/appts.css">
 </head>
-<div class="page-title">Employees</div>
-<button class="add-button"  id="addEmployee">Add New Employee</button>
-<div class="search-bar">
-    <input type="text" id="searchEmployee" placeholder="Search by Employee Name">
-</div>
 
-<table id="employeeTable">
-    <thead>
-        <tr>
-            <th>Employee Id</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Work Phone</th>
-            <th>Personal Phone</th>
-            <th>Total Appointments</th>
-            <th>Edit Employee Info</th>
-            <th>Edit Employee Services</th>
-            <th>View Employee Services</th>
+<body class="font-poppins bg-gray-100 text-gray-800 p-6">
 
+  <div class="text-2xl font-bold text-gray-700 mb-4">Employees</div>
 
+  <button id="addEmployee" class="add-button bg-gray-700 text-white px-6 py-2 rounded hover:bg-black transition mb-4">
+    Add New Employee
+  </button>
+
+  <div class="search-bar mb-6">
+    <input type="text" id="searchEmployee" placeholder="Search by Employee Name"
+           class="w-full md:w-1/2 p-2 border border-gray-300 rounded"/>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table id="employeeTable" class="w-full table-auto bg-white shadow-md rounded">
+      <thead>
+        <tr class="bg-gray-700 text-white text-sm uppercase">
+          <th class="px-4 py-2 text-left">Employee Id</th>
+          <th class="px-4 py-2 text-left">Name</th>
+          <th class="px-4 py-2 text-left">Email</th>
+          <th class="px-4 py-2 text-left">Work Phone</th>
+          <th class="px-4 py-2 text-left">Personal Phone</th>
+          <th class="px-4 py-2 text-left">Total Appointments</th>
+          <th class="px-4 py-2 text-left">Edit Info</th>
+          <th class="px-4 py-2 text-left">Edit Services</th>
+          <th class="px-4 py-2 text-left">View Services</th>
         </tr>
-    </thead>
-    <tbody>
-        <!-- Customer data will be populated here -->
-    </tbody>
-</table>
+      </thead>
+      <tbody class="text-sm divide-y divide-gray-200">
+        <!-- Employee data will be populated here -->
+      </tbody>
+    </table>
+  </div>
 
+  <!-- Add Employee Modal -->
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="modal-content bg-white w-full max-w-md p-6 rounded-lg shadow-lg relative">
+      <button onclick="closeModal('modal')" class="absolute top-2 right-4 text-gray-500 text-2xl">&times;</button>
+      <h2 class="text-xl font-semibold mb-4">New Employee Info</h2>
 
-<div id="modal" class="modal">
-    
-    <div class="modal-content">
-        <div class="close" onclick="closeModal('modal')">&times;</div>
+      <input type="text" id="fname" placeholder="First Name" class="w-full p-2 border border-gray-300 rounded mb-3">
+      <input type="text" id="lname" placeholder="Last Name" class="w-full p-2 border border-gray-300 rounded mb-3">
+      <input type="email" id="email" placeholder="Employee Email" class="w-full p-2 border border-gray-300 rounded mb-3">
+      <input type="number" id="workPhoneNum" placeholder="Work Phone" class="w-full p-2 border border-gray-300 rounded mb-3">
+      <input type="number" id="personalPhoneNum" placeholder="Personal Phone" class="w-full p-2 border border-gray-300 rounded mb-6">
 
-        <br> <br>
-        <div id='modalInfo'>
-        New Employee Info <br><br>
-        <input type="text" id="fname" name="fname" placeholder="First Name"><br><br>
-        <input type="text" id="lname" name="lname" placeholder="Last Name"><br><br>
-        <input type="email" id="email" name='email' placeholder="Employee Email"> <br><br>
-        <input type="number" id="workPhoneNum" name="workPhoneNum" placeholder="Employee Work Phone Number"><br><br>
-        <input type="number" id="personalPhoneNum" name="personalPhoneNum" placeholder="Employee Personal Phone Number"><br><br>
-
-
-        <input id="addNewEmployee" type="button" value="Add New Employee">
-
-
-        </div>
+      <input id="addNewEmployee" type="button" value="Add New Employee" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">
     </div>
-</div>
+  </div>
 
+  <div id="editmodal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="modal-content bg-white w-full max-w-md p-6 rounded-lg shadow-lg relative">
+      <button onclick="closeModal('editmodal')" class="absolute top-2 right-4 text-gray-500 text-2xl">&times;</button>
+      <h2 class="text-xl font-semibold mb-4">Edit Employee Info</h2>
 
-<div id="editmodal" class="modal">
-    
-    <div class="modal-content">
-        <div class="close" onclick="closeModal('editmodal')">&times;</div>
+      <input type="text" id="editFName" placeholder="First Name" class="w-full p-2 border border-gray-300 rounded mb-3">
+      <input type="text" id="editLName" placeholder="Last Name" class="w-full p-2 border border-gray-300 rounded mb-3">
+      <input type="email" id="editEmail" placeholder="Employee Email" class="w-full p-2 border border-gray-300 rounded mb-3">
+      <input type="number" id="editWorkPhoneNum" placeholder="Work Phone" class="w-full p-2 border border-gray-300 rounded mb-3">
+      <input type="number" id="editPersonalPhoneNum" placeholder="Personal Phone" class="w-full p-2 border border-gray-300 rounded mb-6">
 
-        <br> <br>
-        <div id='modalInfo'>
-        Edit Employee Info <br><br>
-        <input type="text" id="editFName" name="editFName" placeholder="First Name"><br><br>
-        <input type="text" id="editLName" name="editLName" placeholder="Last Name"><br><br>
-        <input type="email" id="editEmail" name='editEmail' placeholder="Employee Email"> <br><br>
-        <input type="number" id="editWorkPhoneNum" name="editWorkPhoneNum" placeholder="Employee Work Phone Number"><br><br>
-        <input type="number" id="editPersonalPhoneNum" name="editPersonalPhoneNum" placeholder="Employee Personal Phone Number"><br><br>
-
-        <input id="editemployee" type="button" value="Edit Employee">
-
-
-        </div>
+      <input id="editemployee" type="button" value="Edit Employee" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 w-full">
     </div>
-</div>
+  </div>
 
+  <div id="editservices" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="modal-content bg-white w-full max-w-md p-6 rounded-lg shadow-lg relative">
+      <button onclick="closeModal('editservices')" class="absolute top-2 right-4 text-gray-500 text-2xl">&times;</button>
+      <h2 class="text-xl font-semibold mb-4">Edit Employee Services Info</h2>
 
-<div id="editservices" class="modal">
-    
-    <div class="modal-content">
-        <div class="close" onclick="closeModal('editservices')">&times;</div>
-
-        <br> <br>
-        <div id='modalInfo'>
-        Edit Employee Services Info <br><br>
-        <div id="servicesList"></div>
-        <input id='updateServices'type="button" value="Edit Services for Employee">
-
-
-        </div>
+      <div id="servicesList" class="mb-6"></div>
+      <input id="updateServices" type="button" value="Edit Services for Employee" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 w-full">
     </div>
-</div>
+  </div>
 
-
-<div id="viewservices" class="modal">
-    
-    <div class="modal-content">
-        <div class="close" onclick="closeModal('viewservices')">&times;</div>
-
-        <br> <br>
-        <div id='modalInfo'>
-            <div id="viewheader">Service Offered By Employee</div> <br><br>
-            <div id="offeredservices">List of services offered</div>
-
-
-            
-        </div>
+  <div id="viewservices" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="modal-content bg-white w-full max-w-md p-6 rounded-lg shadow-lg relative">
+      <button onclick="closeModal('viewservices')" class="absolute top-2 right-4 text-gray-500 text-2xl">&times;</button>
+      <h2 class="text-xl font-semibold mb-4" id="viewheader">Services Offered by Employee</h2>
+      <div id="offeredservices" class="text-sm text-gray-700">List of services offered</div>
     </div>
-</div>
+  </div>
 
+  <script>
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
 
-
-
-
-
-
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
