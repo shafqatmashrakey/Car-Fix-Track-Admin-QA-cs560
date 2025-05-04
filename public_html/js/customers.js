@@ -101,13 +101,26 @@ fetch('/getcustomers', {
     });
 
 document.getElementById('addNewCustomer').onclick = function () {
+    const firstName = document.getElementById('fname').value.trim();
+    const lastName = document.getElementById('lname').value.trim();
+    const phone = document.getElementById('phoneNum').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const address = document.getElementById('address').value.trim();
+
+    // Validation: Check if any field is empty
+    if (!firstName || !lastName || !phone || !email || !address) {
+        alert('Please fill out all fields');
+        return; // Stop submission
+    }
+
     const newCustomer = {
-        firstName: document.getElementById('fname').value,
-        lastName: document.getElementById('lname').value,
-        phone: document.getElementById('phoneNum').value,
-        email: document.getElementById('email').value,
-        address: document.getElementById('address').value,
+        firstName,
+        lastName,
+        phone,
+        email,
+        address,
     };
+
 
     fetch('/addcustomer', {
         method: 'POST',
