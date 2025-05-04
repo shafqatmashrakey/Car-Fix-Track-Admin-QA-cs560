@@ -1,172 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Car Shop Management System</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Car Shop Management System</title>
+        <link rel="stylesheet" type="text/css" href="css/appts.css">
+    </head>
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            poppins: ['Poppins', 'sans-serif'],
-          },
-        },
-      },
-    };
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body class="font-poppins bg-[url('/css/200w.gif')] bg-cover bg-center text-gray-800 min-h-screen">
-
-  <div class="flex items-center justify-center min-h-screen" id="login-container">
-    <form class="bg-white p-8 rounded shadow-md w-full max-w-sm" id="login-form">
-      <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
-      <input type="text" id="username" placeholder="Username" required
-             class="w-full mb-4 px-3 py-2 border border-gray-300 rounded"/>
-      <input type="password" id="password" placeholder="Password" required
-             class="w-full mb-4 px-3 py-2 border border-gray-300 rounded"/>
-      <button type="submit"
-              class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">Login</button>
-    </form>
-  </div>
-
-  <div class="hidden" id="main-content">
-    <div class="flex items-center justify-between px-6 py-4 bg-gray-800 text-white shadow-md">
-      <div class="text-xl font-bold">Car Shop Management System</div>
-      <div class="relative">
-        <button id="menuToggle" onclick="toggleMenu()"
-                class="px-4 py-2 border border-white rounded hover:bg-gray-700">Menu ▼</button>
-        <div id="dropdownMenu"
-             class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg hidden z-50">
-          <a href="#" onclick="loadPage('customers')" class="block px-4 py-2 hover:bg-gray-100">Customers</a>
-          <a href="#" onclick="loadPage('vehicles')" class="block px-4 py-2 hover:bg-gray-100">Vehicles</a>
-          <a href="#" onclick="loadPage('employees')" class="block px-4 py-2 hover:bg-gray-100">Employees</a>
-          <a href="#" onclick="loadPage('appointments')" class="block px-4 py-2 hover:bg-gray-100">Appointments</a>
-          <a href="#" onclick="loadPage('services')" class="block px-4 py-2 hover:bg-gray-100">Services</a>
-          <a href="#" onclick="loadPage('payments')" class="block px-4 py-2 hover:bg-gray-100">Payments</a>
-          <a href="#" onclick="loadPage('items')" class="block px-4 py-2 hover:bg-gray-100">Items</a>
-          <a href="#" onclick="logout()" class="block px-4 py-2 hover:bg-gray-100">Logout</a>
+    <body>
+        <div class="login-container" id="login-container">
+            <form class="login-form" id="login-form">
+                <h2>Login</h2>
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
         </div>
-      </div>
-    </div>
+        <!-- Main Content -->
+        <div class="main-content" id="main-content">
+            <div class="header">
+                <div class="title">Car Shop Management System</div>
+                <div class="dropdown">
+                    <button class="dropbtn">Menu ▼</button>
+                    <div class="dropdown-content">
+                        <a href="#" onclick="loadPage('customers')">Customers</a>
+                        <a href="#" onclick="loadPage('vehicles')">Vehicles</a>
+                        <a href="#" onclick="loadPage('employees')">Employees</a>
+                        <a href="#" onclick="loadPage('appointments')">Appointments</a>
+                        <a href="#" onclick="loadPage('services')">Services</a>
+                        <a href="#" onclick="loadPage('payments')">Payments</a>
+                        <a href="#" onclick="loadPage('items')">Items</a>
+                        <a href="#" onclick="logout()">Logout</a>
+                        
+                    </div>
+                </div>
+            </div>
 
-    <!-- Content Section -->
-    <div class="p-6" id="content-container">
-      <!-- Content dynamically loaded here -->
-    </div>
-  </div>
+            <!-- Content Section (Dynamically Loaded) -->
+            <div class="content" id="content-container">
+                <!-- The content will be injected here by JavaScript -->
+            </div>
+        </div>
+        <!-- Content Section (Dynamically Loaded) -->
+        <div class="content" id="content-container">
+            <!-- The content will be injected here by JavaScript -->
+        </div>
 
-  <script>
-    // Toggle menu visibility
-    function toggleMenu() {
-      const menu = document.getElementById("dropdownMenu");
-      menu.classList.toggle("hidden");
-    }
+        <script>
+            // Define the pages object at the top
+            const pages = {
+                customers: '/customers-page.html',
+                vehicles: '/vehicles-page.html',
+                employees: '/employees-page.html',
+                appointments: '/appointments-page.html',
+                services: '/services-page.html',
+                payments: '/payments-page.html',
+                items: '/items-page.html'
+            };
 
-    window.addEventListener("click", function (e) {
-      const menu = document.getElementById("dropdownMenu");
-      const toggle = document.getElementById("menuToggle");
+            const addButtons = {
+                customers: 'addCustomer',
+                vehicles: 'addVehicle',
+                employees: 'addEmployee',
+                appointments: 'addAppointment',
+                services: 'addService',
+                payments: 'addPayment',
+                items: 'addItem'
+            };
 
-      if (!menu.contains(e.target) && !toggle.contains(e.target)) {
-        menu.classList.add("hidden");
-      }
-    });
+            // Simulated login credentials
+            const validUsername = "admin";
+            const validPassword = "password";
 
-    const pages = {
-      customers: '/customers-page.html',
-      vehicles: '/vehicles-page.html',
-      employees: '/employees-page.html',
-      appointments: '/appointments-page.html',
-      services: '/services-page.html',
-      payments: '/payments-page.html',
-      items: '/items-page.html'
-    };
+            // Handle login form submission
+            document.getElementById('login-form').addEventListener('submit', function (e) {
+                e.preventDefault();
 
-    const addButtons = {
-      customers: 'addCustomer',
-      vehicles: 'addVehicle',
-      employees: 'addEmployee',
-      appointments: 'addAppointment',
-      services: 'addService',
-      payments: 'addPayment',
-      items: 'addItem'
-    };
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
 
-    const validUsername = "admin";
-    const validPassword = "password";
+                if (username === validUsername && password === validPassword) {
+                    // Hide login form and show main content
+                    document.getElementById('login-container').style.display = 'none';
+                    document.getElementById('main-content').style.display = 'block';
 
-    document.getElementById('login-form').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
+                    // Load the landing page
+                    loadPage('landing');
+                } else {
+                    alert('Invalid username or password!');
+                }
+            });
 
-      if (username === validUsername && password === validPassword) {
-        document.getElementById('login-container').style.display = 'none';
-        document.getElementById('main-content').classList.remove('hidden');
-        loadPage('landing');
-      } else {
-        alert('Invalid username or password!');
-      }
-    });
+            // Logout function to handle user logout
+            function logout() {
+                // Hide main content and show login form
+                document.getElementById('main-content').style.display = 'none';
+                document.getElementById('login-container').style.display = 'flex';
 
-    function logout() {
-      document.getElementById('main-content').classList.add('hidden');
-      document.getElementById('login-container').style.display = 'flex';
-      alert('You have been logged out.');
-    }
-
-    function loadPage(page) {
-      const contentContainer = document.getElementById('content-container');
-      contentContainer.classList.remove('landing-page', 'other-pages');
-
-      if (!page || page === 'landing') {
-        contentContainer.classList.add('landing-page');
-        contentContainer.innerHTML = '';
-        return;
-      }
-
-      contentContainer.classList.add('other-pages');
-      const pageToLoad = pages[page] || pages.customers;
-
-      fetch(pageToLoad)
-        .then(response => response.text())
-        .then(data => {
-          contentContainer.innerHTML = data;
-          injectScript(`js/${String(page)}.js`);
-          if (addButtons[page]) {
-            const addButton = document.getElementById(addButtons[page]);
-            if (addButton) {
-              addButton.onclick = function () {
-                openModal('modal');
-              };
+                // Clear any session-related data if needed
+                alert('You have been logged out.');
             }
-          }
-        })
-        .catch(error => {
-          contentContainer.innerHTML = `<p>Error loading page content: ${error}</p>`;
-        });
-    }
 
-    function injectScript(src) {
-      const script = document.createElement('script');
-      script.src = src;
-      script.type = 'text/javascript';
-      document.body.appendChild(script);
-    }
+            // Function to load the appropriate page content
+            function loadPage(page) {
+                const contentContainer = document.getElementById('content-container');
 
-    function openModal(modal) {
-      document.getElementById(modal).style.display = 'block';
-    }
+                // Remove all existing classes
+                contentContainer.classList.remove('landing-page', 'other-pages');
 
-    function closeModal(modal) {
-      document.getElementById(modal).style.display = 'none';
-    }
-    
-    window.onload = () => loadPage('landing');
-  </script>
-</body>
+                // Handle landing page specifically
+                if (!page || page === 'landing') {
+                    contentContainer.classList.add('landing-page');
+                    contentContainer.innerHTML = ''; // Keep it empty
+                    return;
+                }
+
+                // For other pages
+                contentContainer.classList.add('other-pages');
+                const pageToLoad = pages[page] || pages.customers;
+
+                // Fetch the content and inject it into the container
+                fetch(pageToLoad)
+                    .then(response => response.text())
+                    .then(data => {
+                        contentContainer.innerHTML = data;
+                        injectScript(`js/${String(page)}.js`);
+                        if (addButtons[page]) {
+                            const addButton = document.getElementById(addButtons[page]);
+                            if (addButton) {
+                                addButton.onclick = function () {
+                                    openModal('modal');
+                                };
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        contentContainer.innerHTML = `<p>Error loading page content: ${error}</p>`;
+                    });
+            }
+
+            function openModal(modal) {
+                document.getElementById(modal).style.display = 'block';
+            }
+
+            function closeModal(modal) {
+                document.getElementById(modal).style.display = 'none';
+            }
+
+            // Function to inject a script dynamically into the page
+            function injectScript(src) {
+                const script = document.createElement('script');
+                script.src = src;
+                script.type = 'text/javascript';
+                document.body.appendChild(script);
+            }
+
+            // Load the landing page by default on page load
+            window.onload = () => loadPage('landing');
+        </script>
+    </body>
+
 </html>
