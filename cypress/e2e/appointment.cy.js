@@ -1,23 +1,21 @@
-describe('Add Appointment', () => {
-  it('should add a new appointment with valid data', () => {
+describe('Appointments', () => {
+  it('should display the appointment in the table', () => {
+    // Login first
     cy.visit('http://localhost:3000');
-    // Log in first if needed
     cy.get('input#username').type('admin');
     cy.get('input#password').type('password');
     cy.get('button[type="submit"]').click();
 
-    // Navigate to appointments page
-    cy.contains('Appointments').click();
+    // Go to Appointments page
+    cy.get('button.dropbtn').click();
+    cy.contains('a', 'Appointments').click({ force: true });
 
-    // Fill out appointment form
-    cy.get('input[name="customer"]').type('John Doe');
-    cy.get('input[name="vehicle"]').type('Toyota');
-    cy.get('input[name="date"]').type('2099-12-31');
-    cy.get('button[type="submit"]').click();
-
-    // Check appointment appears in list
-    cy.contains('John Doe').should('exist');
-    cy.contains('Toyota').should('exist');
-    cy.contains('2099-12-31').should('exist');
+    // Check that the appointment exists in the table
+    cy.get('table#apptTable').contains('td', 'John Doe').should('exist');
+    cy.get('table#apptTable').contains('td', 'Honda Accord 2020').should('exist');
+    cy.get('table#apptTable').contains('td', 'Regular check').should('exist');
+    cy.get('table#apptTable').contains('td', 'Battery Check').should('exist');
+    cy.get('table#apptTable').contains('td', 'Emma Johnson junior').should('exist');
+    cy.get('table#apptTable').contains('td', 'No').should('exist');
   });
 });

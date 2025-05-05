@@ -27,6 +27,14 @@ describe('Add Employee', () => {
     cy.get('input#addNewEmployee').click();
 
     // Check if the new employee appears in the table
+    cy.get('input#username').type('admin');
+    cy.get('input#password').type('password');
+    cy.get('button[type="submit"]').click();
+
+    cy.get('button.dropbtn').click();
+    cy.contains('a', 'Employees').click({ force: true });
+    cy.get('button#addEmployee').click();
+
     cy.get('table#employeeTable').contains('td', 'Alex').should('exist');
     cy.get('table#employeeTable').contains('td', 'Tester').should('exist');
     cy.get('table#employeeTable').contains('td', 'alex.tester@example.com').should('exist');
